@@ -23,17 +23,16 @@ var blogRoutes    = require("./routes/blogs"),
     commentRoutes = require("./routes/comments"),
     indexRoutes   = require("./routes/index");
 
-mongoose.connect("mongodb+srv://AryanKarn:hellokaun@fbloggerapp-surie.mongodb.net/test?retryWrites=true&w=majority",{useNewUrlParser: true,useUnifiedTopology: true});   
-app.use(bodyParser.urlencoded({extended:true})); 
-app.use(methodOverride("_method"));
-app.use(express.static("public"));
-app.set("view engine","ejs");
+    app.use(bodyParser.urlencoded({extended:true})); 
+    app.use(methodOverride("_method"));
+    app.use(express.static("public"));
+    app.set("view engine","ejs");
 app.use(flash());
-//seedDB();
+// seedDB();
 
 //PASSPORT CONFIGURATION
 app.use(require("express-session")({
-    secret: "Hello there!Welcome to the world of arkarn04",
+    secret: "Hello there!Welcome to the world of Yash",
     resave: false,
     saveUninitialized: false
 }));
@@ -42,7 +41,7 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
- 
+
 app.use(function(req,res,next){
     res.locals.currentUser = req.user;
     res.locals.success = req.flash("success");
@@ -52,7 +51,22 @@ app.use(function(req,res,next){
 
 
 app.use(blogRoutes);
-app.use(commentRoutes);
+app.use(commentRoutes); 
+
+mongoose.connect("mongodb+srv://yashAgarwal:@1234@4321Ts@cluster0.fealpwv.mongodb.net/test", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false, // Add this line to avoid deprecation warning
+    useCreateIndex: true // Add this line to avoid deprecation warning
+})
+.then(() => {
+    console.log("Connected to MongoDB");
+})
+.catch((err) => {
+    console.error("Error connecting to MongoDB:", err.message);
+});
+
+
 app.use(indexRoutes);
 
 app.listen(PORT,function(){

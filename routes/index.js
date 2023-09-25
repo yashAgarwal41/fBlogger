@@ -46,11 +46,18 @@ router.post("/login",passport.authenticate("local",
 
 });
 
-//logout route
-router.get("/logout",function(req,res){
-    req.logout();
-    req.flash("success","Logged you Out");
-    res.redirect("/");
-}); 
+// Logout Route
+router.get("/logout", function(req, res) {
+    try {
+        req.logout(); // Attempt to log the user out
+        req.flash("success", "Logged you out!");
+        res.redirect("/blogs");
+    } catch (error) {
+        console.error("Logout error:", error);
+        req.flash("error", "Error logging out."); // Flash an error message
+        res.redirect("/blogs"); // Redirect to a different page or handle the error gracefully
+    }
+});
+
 
 module.exports = router;
